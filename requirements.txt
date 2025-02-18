@@ -1,0 +1,6 @@
+google
+openai>=1.1.1,<2.0.0
+anthropic>=0.18.1
+google-cloud-aiplatform>=1.38.1
+python-dotenv>=1.0.0
+google.generativeai
