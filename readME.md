@@ -1,11 +1,12 @@
 # AI Model Discussion System
 
-This project implements a system that facilitates discussion and comparison between three major AI models: OpenAI's GPT, Anthropic's Claude, and Google's Gemini. The system allows models to evaluate each other's responses and collaboratively improve the final output.
+This project implements a sophisticated system that facilitates discussion and comparison between three major AI models: OpenAI's GPT, Anthropic's Claude, and Google's Gemini. The system offers two distinct approaches to model evaluation and response refinement.
 
 ## Features
 
 - Simultaneous querying of multiple AI models
-- Blind evaluation system through randomized response labeling
+- Two distinct evaluation methodologies
+- Blind evaluation through randomized response labeling
 - Inter-model discussion and analysis
 - Refinement of chosen responses
 - Asynchronous operation for improved performance
@@ -32,71 +33,104 @@ This project implements a system that facilitates discussion and comparison betw
    - NEZ_CLAUDE_API_KEY  
    - GEMINI_API
 
-## How It Works
+## Evaluation Approaches
 
-### 1. Initial Response Collection
-- The system takes a user prompt and sends it to all three AI models
-- Responses are collected asynchronously
-- Each response is randomly assigned a label (R1, R2, R3) to ensure unbiased evaluation
+The system implements two distinct methods for evaluating and selecting the best response:
 
-### 2. Discussion Phase
-- Models are presented with all responses (labeled R1, R2, R3)
-- Each model evaluates the responses and provides:
-  - A preferred response selection
-  - Reasoning for their choice
-  - Suggested improvements
+### 1. Plain Model Ranking
+- Models evaluate responses blindly (labeled as R1, R2, R3)
+- Discussion-based selection process
+- Qualitative evaluation of responses
+- Focus on reasoning and improvement suggestions
+- Simple majority-based selection
+- Outputs:
+  - Chosen response
+  - Improvement suggestions
+  - Final refined response
 
-### 3. Analysis
-- The system analyzes the discussion to determine:
-  - Most preferred response
-  - Consolidated improvement suggestions
+### 2. Merit Score Ranking
+- Comprehensive scoring system across multiple criteria
+- Weighted evaluation metrics:
+  - Factual Accuracy (35%)
+  - Explanation Quality (25%)
+  - Practical Examples (20%)
+  - Technical Depth (20%)
+  - Additional considerations for Clarity and Completeness
+- Numerical scoring (0-100) for each category
+- Confidence levels based on score differences:
+  - Very High: >15 points difference
+  - High: 10-15 points difference
+  - Medium: 5-10 points difference
+  - Low: <5 points difference
+- Statistical analysis of scores including outlier removal
+- Detailed performance metrics
 
-### 4. Final Response
-- The chosen model provides a refined response
-- Incorporates suggested improvements
-- Delivers final output to user
+## Process Flow
 
-## Usage
+### Initial Phase (Common to Both Approaches)
+1. User provides a prompt
+2. System queries all three models simultaneously
+3. Responses are collected asynchronously
+4. Random labeling (R1, R2, R3) ensures unbiased evaluation
 
-The system can be used either as a Python script or in a Jupyter notebook. The system will return a dictionary containing:
-- Initial responses from each model
-- The chosen response label
+### Evaluation Phase
+
+#### Plain Model Ranking:
+1. Models discuss and evaluate responses
+2. Each model provides reasoning for their choice
+3. System identifies the most preferred response
+4. Collects improvement suggestions
+5. Final response incorporates refinements
+
+#### Merit Score Ranking:
+1. Detailed scoring across all categories
+2. Statistical analysis of scores
+3. Weighted calculation of final scores
+4. Confidence level determination
+5. Comprehensive feedback collection
+6. Refined response with specific improvements
+
+## Output Format
+
+Both approaches return structured results including:
+- Initial responses from all models
+- Evaluation results (discussion-based or scored)
+- Selected response details
 - Refinement suggestions
-- The final refined response
+- Final refined response
 
 ## Key Components
 
 ### ModelDiscussionSystem
-The main class that orchestrates the entire process:
 - Manages model interactions
 - Handles response collection
-- Facilitates discussions
+- Facilitates evaluation process
 - Processes refinements
 
-### Blind Evaluation System
-- Responses are randomly labeled (R1, R2, R3)
-- Models evaluate responses without knowing their source
-- Prevents potential biases in the evaluation process
+### Evaluation System
+- Plain Ranking: Discussion-based evaluation
+- Merit Scoring: Comprehensive numerical evaluation
+- Both systems maintain blind evaluation principles
 
 ### Asynchronous Operation
-- Utilizes Python's asyncio for concurrent operations
-- Improves performance by running model queries in parallel
-- Handles API communications efficiently
+- Concurrent model queries
+- Efficient API communication
+- Improved response times
 
 ## Customization
 
-### Modifying Model Selection
-You can modify the model_map in the ModelDiscussionSystem class to use different models, with labels R1, R2, R3 mapping to your chosen models.
-
-### Adjusting Response Format
-The discussion prompt format can be customized in the _create_discussion_prompt method.
+- Adjustable scoring weights (Merit System)
+- Modifiable evaluation criteria
+- Customizable confidence thresholds
+- Flexible prompt formats
 
 ## Error Handling
 
-The system includes robust error handling for:
+Robust error handling for:
 - API communication issues
 - Response parsing
-- Discussion analysis
+- Score calculation (Merit System)
+- Discussion analysis (Plain System)
 - Refinement extraction
 
 ## Contributing
